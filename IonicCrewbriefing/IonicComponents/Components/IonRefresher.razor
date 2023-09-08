@@ -1,0 +1,54 @@
+﻿@inject IJSRuntime JS
+<ion-refresher id="refresher" @ref="refresherRef" slot="fixed" @onIonRefresh="InvokeParentMethod">
+    @ChildContent
+</ion-refresher>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    ElementReference refresherRef;
+    IJSObjectReference? module;
+    [Parameter] public EventCallback OnRefresh { get; set; }
+
+    // protected override async Task OnInitializedAsync()
+    // {
+        
+    // }
+
+    private async void InvokeParentMethod()
+    {
+        if (!OnRefresh.HasDelegate)
+            return;
+        await OnRefresh.InvokeAsync();
+    }
+
+    public async Task CompleteRefresh()
+    {
+        if (module == null)
+            return;
+
+        await module.InvokeVoidAsync("CompleteRefresh", refresherRef);
+    }
+
+    public async Task CancelRefresh()
+    {
+        if (module == null)
+            return;
+
+        await module.InvokeVoidAsync("CancelRefresh", refresherRef);
+    }
+
+    public async Task<double> RefreshGetProgress()
+    {
+        if (module == null)
+            return 0;
+
+        var result = await module.InvokeAsync<double>("RefreshGetProgress", refresherRef);
+
+        return result;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/IonicComponents/Components/IonRefresher.razor.js");
+    }
+}

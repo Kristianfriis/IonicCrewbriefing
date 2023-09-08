@@ -1,0 +1,23 @@
+﻿@inject NavigationManager NavigateManager
+<IonMenu content-id="@Target">
+    <IonHeader>
+        <IonToolbar>
+            <IonTitle>Menu Content</IonTitle>
+        </IonToolbar>
+    </IonHeader>
+    <IonContent>
+        <IonMenuToggle>
+            <IonItem Href="/">Home</IonItem>
+        </IonMenuToggle>
+        <IonMenuToggle>
+            <IonItem Href="/counter">Counter</IonItem>
+        </IonMenuToggle>
+        <IonMenuToggle>
+            <IonItem Href="/fetchdata">Fetch Data</IonItem>
+        </IonMenuToggle>
+    </IonContent>
+</IonMenu>
+
+@code {
+    [Parameter] public string? Target { get; set; }
+}

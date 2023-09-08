@@ -1,0 +1,21 @@
+﻿@code {
+    [CascadingParameter] private CustomIonActionSheet? Parent { get; set; }
+    [Parameter] public string Text { get; set; } 
+    [Parameter] public string Role { get; set; } 
+    [Parameter] public string Action { get; set; } 
+
+    protected override void OnInitialized()
+    {
+        if (Parent is null)
+            throw new ArgumentNullException(nameof(Parent), "IonActionSheetButton must exist within a IonActionSheet");
+
+        base.OnInitialized();
+
+        Parent!.AddButton(this);
+    }
+
+    public IonActionSheetClass GetButtonConfig()
+    {
+        return new IonActionSheetClass(Text, Role, Action);
+    }
+}

@@ -1,0 +1,34 @@
+﻿@page "/login"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager NavigationManager
+
+<IonContent class="ion-padding">
+    <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+        <ion-card style="">
+            <ion-card-header>
+                <ion-card-title>Please log in</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-buttons slot="start">
+                    <ion-button @onclick="BeginRegister"> Register </ion-button>
+                </ion-buttons>
+                <ion-buttons slot="end">
+                    <ion-button @onclick="BeginLogIn"> Log in </ion-button>
+                </ion-buttons>
+            </ion-card-content>
+        </ion-card>
+
+    </div>
+</IonContent>
+
+@code {
+    private void BeginRegister()
+    {
+        NavigationManager.NavigateTo("authentication/register");
+    }
+    private void BeginLogIn()
+    {
+        NavigationManager.NavigateToLogin("authentication/login");
+    }
+}

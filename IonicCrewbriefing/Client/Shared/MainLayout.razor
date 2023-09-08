@@ -1,0 +1,46 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager NavigationManager
+
+@* <IonApp> *@
+@* <AuthorizeView> *@
+    @* <Authorized> *@
+@*         <main>
+        <FlyOutNavMenu Target="main-content"></FlyOutNavMenu>
+        <Header></Header>
+        <IonContent class="ion-padding" id="main-content">
+            @Body
+        </IonContent>
+    </main> *@
+    @* </Authorized> *@
+@*     <NotAuthorized>
+            <LoginPage></LoginPage>
+        </NotAuthorized> *@
+@* </AuthorizeView> *@
+@* </IonApp> *@
+
+@* @inherits LayoutComponentBase *@
+
+<IonApp>
+<AuthorizeView>
+    <Authorized>
+        <main>
+            <FlyOutNavMenu Target="main-content"></FlyOutNavMenu>
+            <Header></Header>
+            <IonContent class="ion-padding" id="main-content">
+                @Body
+            </IonContent>
+        </main>
+    </Authorized>
+    <NotAuthorized>
+        <LoginPage></LoginPage>    
+    </NotAuthorized>
+    <Authorizing>
+        <ion-loading is-open="true" message="Logging in" duration="10000"></ion-loading>
+    </Authorizing>
+</AuthorizeView>
+</IonApp>
+
+@code {
+
+}

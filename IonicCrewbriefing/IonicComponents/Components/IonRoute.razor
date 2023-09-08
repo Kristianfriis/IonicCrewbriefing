@@ -1,0 +1,13 @@
+﻿<ion-route url="@Url" component="@Component"></ion-route>
+
+@code {
+    [CascadingParameter] private IonRouter? Parent { get; set; }
+    [Parameter] public string Url { get; set; }
+    [Parameter] public string Component { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Parent is null)
+            throw new ArgumentNullException(nameof(Parent), "IonRoute must exist within a IonRouter");
+    }
+}

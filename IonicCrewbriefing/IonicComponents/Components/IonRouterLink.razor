@@ -1,0 +1,15 @@
+﻿<ion-router-link href="@Href">
+    @ChildContent
+</ion-router-link>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Href { get; set; }
+    [Parameter] public bool Animated { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (string.IsNullOrEmpty(Href))
+            throw new ArgumentNullException("Href has to be defined when using a IonRouteLink component");
+    }
+}

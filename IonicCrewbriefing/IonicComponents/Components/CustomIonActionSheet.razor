@@ -1,0 +1,70 @@
+﻿@using Newtonsoft.Json;
+@inject IJSRuntime JS
+@implements IDisposable
+
+<ion-action-sheet trigger="@Trigger" header="@Header" @ref="actionSheetRef" @attributes="AdditionalAttributes">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</ion-action-sheet>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Trigger { get; set; }
+    [Parameter] public string? Header { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
+    /// <summary>
+    /// Event Call back which triggers on a action button click. 
+    /// Will return the name of the action in the ActionSheetButton
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> OnActionButtonClick { get; set; }
+    IJSObjectReference? module;
+    private ElementReference actionSheetRef { get; set; }
+    DotNetObjectReference<CustomIonActionSheet>? ObjectReference;
+
+    internal List<IonActionSheetButton> Buttons = new List<IonActionSheetButton>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    internal void AddButton(IonActionSheetButton button)
+    {
+        Buttons.Add(button);
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/IonicComponents/Components/CustomIonActionSheet.razor.js");
+
+        var buttons = Buttons.Select(x => x.GetButtonConfig()).ToList();
+
+        await module.InvokeVoidAsync("AddActionSheetButtons", actionSheetRef, buttons);
+        // if (firstRender)
+        // {
+        //     ObjectReference = DotNetObjectReference.Create(this);
+        //     await module.InvokeVoidAsync("initializeIonActionSheet", actionSheetRef, ObjectReference);
+        // }
+    }
+
+    // [JSInvokable("OnDidDismiss")]
+    // public async Task DidDismiss(string action)
+    // {
+    //     await OnActionButtonClick.InvokeAsync(action);
+    // }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+
+        if (ObjectReference != null)
+        {
+            //Now dispose our object reference so our component can be garbage collected
+            ObjectReference.Dispose();
+        }
+    }
+}

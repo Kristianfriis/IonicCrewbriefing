@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager NavigationManager
+<AuthorizeView>
+    <Authorized>
+        <ion-header>
+            <ion-toolbar>
+                <ion-buttons slot="start">
+                    <ion-menu-button></ion-menu-button>
+                </ion-buttons>
+                <ion-title><a href="authentication/profile">Hello, @context.User.Identity?.Name!</a></ion-title>
+                <ion-buttons slot="end">
+                    <ion-button @onclick="BeginLogOut">Log out</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private void BeginLogOut()
+    {
+        NavigationManager.NavigateToLogout("authentication/logout");
+    }
+    private void BeginRegister()
+    {
+        NavigationManager.NavigateTo("authentication/register");
+    }
+    private void BeginLogIn()
+    {
+        NavigationManager.NavigateToLogin("authentication/login");
+    }
+}
+
